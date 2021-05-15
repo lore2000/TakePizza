@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "863714909022",
+    "firebase_url": "https://takepizza-54fa4-default-rtdb.firebaseio.com",
+    "project_id": "takepizza-54fa4",
+    "storage_bucket": "takepizza-54fa4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863714909022:android:947dee57b40bb04b1f0dcf",
+        "android_client_info": {
+          "package_name": "it.uninsubria.takepizza"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "863714909022-l0ti59kil8125p70v7raf3nvvlvu2kkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz-wFE1P1e0wF1YbLvdH9KQEcjrdBByow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "863714909022-l0ti59kil8125p70v7raf3nvvlvu2kkh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

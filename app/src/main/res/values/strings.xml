@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">TakePizza</string>
+    <string name="title_activity_home">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_recensioni">Recensioni</string>
+    <string name="title_profilo">Profilo</string>
+    <string name="email">Inserisci Email</string>
+    <string name="nome">Inserisci Nome</string>
+    <string name="password">Inserisci Password</string>
+    <string name="conferma_password">Conferma Password</string>
+    <string name="invalid_email">Email non valida</string>
+    <string name="invalid_password">Password non valida</string>
+    <string name="confermainvalid_password">Le password non sono uguali</string>
+    <string name="title_activity_maps">Map</string>
+</resources>

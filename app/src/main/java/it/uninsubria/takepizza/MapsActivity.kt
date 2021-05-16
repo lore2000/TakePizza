@@ -1,8 +1,9 @@
 package it.uninsubria.takepizza
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
+import android.view.View
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -40,4 +41,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
+
+    fun onClick(v: View) {
+        when (v.id) {
+            R.id.buttonStar -> try {
+                val intent = Intent(this, Recensione::class.java)
+                startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            R.id.buttonAccount -> try {
+                val intent = Intent(this, Account::class.java)
+                startActivity(intent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
 }

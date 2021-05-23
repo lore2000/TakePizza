@@ -26,6 +26,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private val LOCATION_PERMISSION_REQUEST = 1
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
@@ -55,17 +57,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
        // mMap.moveCamera(CameraUpdateFactory.newLatLng((syndey))
 
 
-        //start move camera to current position
-        val locationManager: LocationManager
-        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val location: Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
-        if (location != null) {
-            val currentLocation = LatLng(location.getLatitude(), location.getLongitude())
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 16f))
-        } else {
-            Toast.makeText(this, "Segnale GPS assente", Toast.LENGTH_LONG).show()
-        }
-        //end movetoCurrent
+
 
     }
 
@@ -100,6 +92,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 return
             }
             mMap.isMyLocationEnabled = true
+
         }
         else
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)
@@ -119,6 +112,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     return
                 }
                  mMap.isMyLocationEnabled = true
+             goToCurrent()
 
             }
             else {
@@ -126,5 +120,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 finish()
             }
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun goToCurrent()
+    {
+
+
+            val locationManager: LocationManager
+            locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val location: Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
+            if (location != null) {
+                val currentLocation = LatLng(location.getLatitude(), location.getLongitude())
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 16f))
+            } else {
+                Toast.makeText(this, "Segnale GPS assente", Toast.LENGTH_LONG).show()
+            }
+
+
     }
 }

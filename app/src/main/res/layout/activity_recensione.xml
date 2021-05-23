@@ -22,7 +22,8 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:onClick="onClick"
-            app:srcCompat="@mipmap/mappa" />
+            app:srcCompat="@drawable/ic_baseline_map_24"
+            tools:ignore="VectorDrawableCompat" />
 
         <ImageButton
             android:id="@+id/buttonStar"
@@ -31,7 +32,8 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:onClick="onClick"
-            app:srcCompat="@mipmap/stella" />
+            app:srcCompat="@drawable/ic_baseline_star_24"
+            tools:ignore="VectorDrawableCompat"/>
 
         <ImageButton
             android:id="@+id/buttonAccount"
@@ -40,16 +42,9 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:onClick="onClick"
-            app:srcCompat="@mipmap/profilo" />
+            app:srcCompat="@drawable/ic_baseline_account_circle_24"
+            tools:ignore="VectorDrawableCompat" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="198dp"
-        tools:layout_editor_absoluteY="331dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

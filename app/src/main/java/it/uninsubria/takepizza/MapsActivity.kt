@@ -29,7 +29,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+// Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -49,7 +49,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         getLocationAccess()
 
-        // Add a marker in Sydney and move the camera
+// Add a marker in Sydney and move the camera
        // val sydney = LatLng(-34.0, 151.0)
        // mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
        // mMap.moveCamera(CameraUpdateFactory.newLatLng((syndey))
@@ -71,8 +71,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     fun onClick(v: View) {
         when (v.id) {
-            R.id.buttonMaps -> try {
-                val intent = Intent(this, MapsActivity::class.java)
+            R.id.buttonStar -> try {
+                val intent = Intent(this, Recensione::class.java)
                 startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()

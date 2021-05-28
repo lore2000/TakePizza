@@ -2,62 +2,78 @@ package it.uninsubria.takepizza
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
+    private val TAG = "MainActivity"
     private var mUserReference: DatabaseReference? = FirebaseDatabase.getInstance().getReference("users")
+    private val mUsers: MutableList<User> = ArrayList()
+    private lateinit var mUsersChildListener: ChildEventListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        textViewSingUp.setOnClickListener{
+            val intent = Intent(this, SingUpActivity::class.java)
+            startActivity(intent)
+        }
+    }
+    fun accesso(v: View?)
+    {
+        val email: String= emailEditText.getText().toString()
+        val password:String=passwordEditText.getText().toString()
+        val verifica:String= "$email-$password"
+        val t: User? =mUsers.find { e -> e.toString().equals(verifica) }
+        if (t != null && t.toString().equals(verifica)) {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }else{
+            Toast.makeText(this@MainActivity, "Email o password sbagliata", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun isValidEmail(email: String): Boolean {
-        val EMAIL_PATTERN = ("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
-        val pattern = Pattern.compile(EMAIL_PATTERN)
-        val matcher = pattern.matcher(email)
-        return matcher.matches()
+    override fun onStart() {
+        super.onStart()
+        val usersChildListener = getUsersChildEventListener()
+        mUserReference!!.addChildEventListener(usersChildListener)
+        mUsersChildListener = usersChildListener
     }
-    private fun isValidPassword(pass: String?): Boolean {
-        return if (pass != null && pass.length >= 4) {
-            true
-        } else false
+    override fun onStop() {
+        super.onStop()
+        if (mUsersChildListener != null) {
+            mUserReference!!.removeEventListener(mUsersChildListener)
+        }
     }
-    fun checkLogin(v: View?) {
-        val username: String=userBox.getText().toString()
-        val email: String = emailBox.getText().toString()
-        if (!isValidEmail(email)) {
-            //Set error message for email field
-            emailBox.setError(getString(R.string.invalid_email))
-        }
-        val pass: String = pswBox.getText().toString()
-        if (!isValidPassword(pass)) {
-            //Set error message for password field
-            pswBox.setError(getString(R.string.invalid_password))
-        }
-        val confpass : String = editTextConfermaPassword.getText().toString()
-        if( pass!=confpass ){
-            editTextConfermaPassword.setError(getString(R.string.confermainvalid_password))
-        }else {
-            if (isValidEmail(email) && isValidPassword(pass)) {
-                val intent = Intent(this, MapsActivity::class.java)
-                // intent.putExtra("keyIdentifier", value)
-                val u=User(username,pass,email)
-                mUserReference!!.child(username).setValue(u)
-                startActivity(intent)
+    fun getUsersChildEventListener(): ChildEventListener{ // metodo usato per tenere aggiornato il login in caso si aggiunga un nuovo utente
+        val childEventListener = object : ChildEventListener {
+            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                val newUser = dataSnapshot.getValue(User::class.java)
+                mUsers.add(newUser!!)
+            }
+            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                val newUser = dataSnapshot.getValue(User::class.java)
+                val userKey = dataSnapshot.key
+                mUsers.find { e -> e.toString().equals(userKey) }?.set(newUser!!)
+            }
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                val userKey = dataSnapshot.key
+                var fu = mUsers.find { e -> e.toString().equals(userKey) }
+                mUsers.remove(fu)
+            }
+            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
+
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "postComments:onCancelled", databaseError.toException())
+                Toast.makeText(this@MainActivity, "Failed to load comments.", Toast.LENGTH_SHORT).show()
             }
         }
+        return childEventListener
     }
 
-    fun test(v: View?)
-    {
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
-    }
 }

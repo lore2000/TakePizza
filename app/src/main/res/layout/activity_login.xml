@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".SingUpActivity">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -26,44 +26,69 @@
         android:textColor="#FF0000"
         android:textSize="44sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
-        android:id="@+id/emailEditText"
+        android:id="@+id/userBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="User Name"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/emailBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="e-Mail"
-        android:layout_marginTop="32dp"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"/>
+        app:layout_constraintTop_toBottomOf="@+id/userBox"
+        tools:layout_editor_absoluteX="0dp" />
 
     <EditText
-        android:id="@+id/passwordEditText"
+        android:id="@+id/pswBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="password"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/emailEditText"/>
+        app:layout_constraintTop_toBottomOf="@+id/emailBox"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/confBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Conferma_password"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/pswBox"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:onClick="accesso"
-        android:text="ACCEDI"
+        android:onClick="test"
+        android:text="Register"
         app:backgroundTint="#FF0000"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/confBox"
+        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
-        android:id="@+id/textViewSingUp"
+        android:id="@+id/loginTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="32dp"
-        android:text="Crea un Account"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
+        android:gravity="center"
+        android:text="Hai già un Account?"
+        app:layout_constraintTop_toBottomOf="@+id/registerButton"
+        tools:layout_editor_absoluteX="16dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

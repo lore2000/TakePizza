@@ -1,8 +1,8 @@
 package it.uninsubria.takepizza
 
 import android.Manifest
-import android.R.string
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,7 +10,6 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils.split
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,16 +20,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private val LOCATION_PERMISSION_REQUEST = 1
-    private var mCoordinateReference: DatabaseReference? = FirebaseDatabase.getInstance().getReference("coordinate")
+
 
 
 
@@ -60,31 +58,44 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         getLocationAccess()
 
-// Add a marker in Sydney and move the camera
+
 
        val prova = LatLng(45.560471, 9.112582)
-        mMap.addMarker(MarkerOptions().position(prova).title("Marker in provola galbino"))
+        mMap.addMarker(MarkerOptions().position(prova).title("Pizzeria Bella Napoli"))
 
         val salame = LatLng(45.5515215, 9.1151543)
-        mMap.addMarker(MarkerOptions().position(salame).title("Marker in salame citterio"))
+        mMap.addMarker(MarkerOptions().position(salame).title("Snoopy"))
 
 
 
         // adding on click listener to marker of google maps.
         mMap.setOnMarkerClickListener { marker -> // on marker click we are getting the title of our marker
-            // which is clicked and displaying it in a toast message.
-           // val markerName = marker.title
-            val latitudine = marker.position.latitude.toString()
-            val longitudine = marker.position.longitude.toString()
+            val colors2 = arrayOf("aggiungi recensione", "naviga", "blue", "black")
 
-            goTo(latitudine,longitudine)
-           // Toast.makeText(this@MapsActivity, "Clicked location is $markerName", Toast.LENGTH_SHORT).show()
+            val builder = AlertDialog.Builder(this@MapsActivity)
+            builder.setTitle("Cosa vuoi fare?")
+            builder.setItems(colors2) { dialog, which ->
+                // the user clicked on colors[which]
+                if(which == 0){
+                    //first option clicked, do this...
+
+
+                }
+                if(which == 1){
+                    //first option clicked, do this...
+
+                    val latitudine = marker.position.latitude.toString()
+                    val longitudine = marker.position.longitude.toString()
+
+                    goTo(latitudine,longitudine)
+                }
+
+            }
+            builder.show()
+
             false
         }
 
-        // mMap.moveCamera(CameraUpdateFactory.newLatLng((syndey))
-
-       //goTo();
 
 
 
@@ -114,11 +125,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
 
                 return
             }

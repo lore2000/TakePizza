@@ -19,8 +19,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
 
@@ -60,20 +60,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-       val prova = LatLng(45.560471, 9.112582)
-        mMap.addMarker(MarkerOptions().position(prova).title("Pizzeria Bella Napoli"))
+       val positionProva = LatLng(45.560471, 9.112582)
+        val prova = MarkerOptions().title("Pizzeria bella Napoli").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+            .position(positionProva)
+        mMap.addMarker(prova)
 
-        val salame = LatLng(45.5515215, 9.1151543)
-        mMap.addMarker(MarkerOptions().position(salame).title("Snoopy"))
-
+        val positionSnoopy = LatLng(45.5515215, 9.1151543)
+        val snoopy = MarkerOptions().title("Snoopy").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+                .position(positionSnoopy)
+        mMap.addMarker(snoopy)
 
 
         // adding on click listener to marker of google maps.
         mMap.setOnMarkerClickListener { marker -> // on marker click we are getting the title of our marker
-            val colors2 = arrayOf("aggiungi recensione", "naviga", "blue", "black")
+            val colors2 = arrayOf("Aggiungi recensione", "Naviga", "Info pizzeria", "Chiudi")
 
             val builder = AlertDialog.Builder(this@MapsActivity)
-            builder.setTitle("Cosa vuoi fare?")
+            builder.setTitle(marker.title)
             builder.setItems(colors2) { dialog, which ->
                 // the user clicked on colors[which]
                 if(which == 0){

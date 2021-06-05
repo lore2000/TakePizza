@@ -4,79 +4,67 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.*
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private val TAG = "MainActivity"
-    private var mUserReference: DatabaseReference? = FirebaseDatabase.getInstance().getReference("users")
-    private val mUsers: MutableList<User> = ArrayList()
-    private lateinit var mUsersChildListener: ChildEventListener
+    private lateinit var auth: FirebaseAuth
+    private var TAG = "MainActivity"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        auth = FirebaseAuth.getInstance()
+
         textViewSingUp.setOnClickListener{
-            val intent = Intent(this, SingUpActivity::class.java)
+            val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
     }
+
     fun accesso(v: View?)
     {
-        val email: String= emailEditText.getText().toString()
-        val password:String=passwordEditText.getText().toString()
-        val verifica:String= "$email-$password"
-        val t: User? =mUsers.find { e -> e.toString().equals(verifica) }
-        if (t != null && t.toString().equals(verifica)) {
-            val intent = Intent(this, MapsActivity::class.java)
-            intent.putExtra("email", email + "")
-            startActivity(intent)
-
-
-        }else{
-            Toast.makeText(this@MainActivity, "Email o password sbagliata", Toast.LENGTH_SHORT).show()
+        val email = emailEditText.text.toString().trim()
+        val password = passwordEditText.text.toString().trim()
+        if (email.isEmpty()) {
+            emailEditText.error = "Enter email"
+            return
         }
+        if (password.isEmpty()) {
+            passwordEditText.error = "Enter password"
+            return
+        }
+        loginUser(email, password)
     }
 
-    override fun onStart() {
-        super.onStart()
-        val usersChildListener = getUsersChildEventListener()
-        mUserReference!!.addChildEventListener(usersChildListener)
-        mUsersChildListener = usersChildListener
-    }
-    override fun onStop() {
-        super.onStop()
-        if (mUsersChildListener != null) {
-            mUserReference!!.removeEventListener(mUsersChildListener)
-        }
-    }
-    fun getUsersChildEventListener(): ChildEventListener{ // metodo usato per tenere aggiornato il login in caso si aggiunga un nuovo utente
-        val childEventListener = object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                val newUser = dataSnapshot.getValue(User::class.java)
-                mUsers.add(newUser!!)
-            }
-            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                val newUser = dataSnapshot.getValue(User::class.java)
-                val userKey = dataSnapshot.key
-                mUsers.find { e -> e.toString().equals(userKey) }?.set(newUser!!)
-            }
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-                val userKey = dataSnapshot.key
-                var fu = mUsers.find { e -> e.toString().equals(userKey) }
-                mUsers.remove(fu)
-            }
-            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
 
+    private fun loginUser(email: String, password: String) {
+
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+// Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    val intent = Intent(this, MapsActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+// If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                    val builder = AlertDialog.Builder(this)
+                    with(builder)
+                    {
+                        setTitle("Authentication failed")
+                        setMessage(task.exception?.message)
+                        setPositiveButton("OK", null)
+                        show()
+                    }
+                }
             }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "postComments:onCancelled", databaseError.toException())
-                Toast.makeText(this@MainActivity, "Failed to load comments.", Toast.LENGTH_SHORT).show()
-            }
-        }
-        return childEventListener
     }
+
 
 }

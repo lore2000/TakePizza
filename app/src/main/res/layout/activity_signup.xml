@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SingUpActivity">
+    tools:context=".SignUpActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="User Name"
+        android:hint="Username"
         android:inputType="textPersonName"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
         tools:layout_editor_absoluteX="0dp" />
@@ -59,25 +59,14 @@
         app:layout_constraintTop_toBottomOf="@+id/emailBox"
         tools:layout_editor_absoluteX="0dp" />
 
-    <EditText
-        android:id="@+id/confBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Conferma_password"
-        android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/pswBox"
-        tools:layout_editor_absoluteX="0dp" />
-
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:onClick="test"
         android:text="Register"
         app:backgroundTint="#FF0000"
-        app:layout_constraintTop_toBottomOf="@+id/confBox"
+        app:layout_constraintTop_toBottomOf="@+id/pswBox"
         tools:layout_editor_absoluteX="0dp" />
 
     <TextView

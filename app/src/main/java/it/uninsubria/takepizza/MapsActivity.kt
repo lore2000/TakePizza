@@ -46,33 +46,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         getLocationAccess()
-        val intent = intent
 
+         addMarker()
+         optionMenu()
 
-       val positionProva = LatLng(45.560471, 9.112582)
-        val prova = MarkerOptions().title("Pizzeria bella Napoli").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
-            .position(positionProva)
-        mMap.addMarker(prova)
+    }
 
-        val positionSnoopy = LatLng(45.5515215, 9.1151543)
-        val snoopy = MarkerOptions().title("Snoopy").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
-                .position(positionSnoopy)
-        mMap.addMarker(snoopy)
-
-
+    fun optionMenu()
+    {
         // adding on click listener to marker of google maps.
         mMap.setOnMarkerClickListener { marker -> // on marker click we are getting the title of our marker
             val colors2 = arrayOf("Aggiungi recensione", "Naviga", "Info pizzeria", "Chiudi")
@@ -82,12 +68,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             builder.setItems(colors2) { dialog, which ->
                 // the user clicked on colors[which]
                 if(which == 0){
-                    //first option clicked, do this...
+                    val intent = Intent(this, Recensione::class.java)
+                    startActivity(intent)
 
 
                 }
                 if(which == 1){
-                    //first option clicked, do this...
 
                     val latitudine = marker.position.latitude.toString()
                     val longitudine = marker.position.longitude.toString()
@@ -100,27 +86,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             false
         }
+    }
 
+    fun addMarker()
+    {
+        val positionDante = LatLng(45.5453829, 9.1043588)
+        val dante = MarkerOptions().title("Pizzeria Dante").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+            .position(positionDante)
+        mMap.addMarker(dante)
 
-
-
-
-
+        val positionSnoopy = LatLng(45.5499098, 9.1124048)
+        val snoopy = MarkerOptions().title("Snoopy").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+            .position(positionSnoopy)
+        mMap.addMarker(snoopy)
     }
 
     fun onClick(v: View) {
         when (v.id) {
             R.id.buttonStar -> try {
-                val intent3 = Intent(this, Recensione::class.java)
-                startActivity(intent3)
+                val intent = Intent(this, Recensione::class.java)
+                startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
             R.id.buttonAccount -> try {
-                val intent2 = Intent(this, Account::class.java)
-                val email = intent.getStringExtra("email")
-                intent2.putExtra("email", email + "")
-                startActivity(intent2)
+                val intent = Intent(this, Account::class.java)
+                startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

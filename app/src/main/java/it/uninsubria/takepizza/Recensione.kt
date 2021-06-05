@@ -10,6 +10,7 @@ class Recensione : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recensione)
     }
+
     fun onClick(v: View) {
         when (v.id) {
             R.id.buttonMaps -> try {

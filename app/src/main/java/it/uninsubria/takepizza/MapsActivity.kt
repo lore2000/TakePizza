@@ -42,6 +42,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+
+
     }
 
     /**
@@ -57,7 +59,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         getLocationAccess()
-
+        val intent = intent
 
 
        val positionProva = LatLng(45.560471, 9.112582)
@@ -109,14 +111,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     fun onClick(v: View) {
         when (v.id) {
             R.id.buttonStar -> try {
-                val intent = Intent(this, Recensione::class.java)
-                startActivity(intent)
+                val intent3 = Intent(this, Recensione::class.java)
+                startActivity(intent3)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
             R.id.buttonAccount -> try {
-                val intent = Intent(this, Account::class.java)
-                startActivity(intent)
+                val intent2 = Intent(this, Account::class.java)
+                val email = intent.getStringExtra("email")
+                intent2.putExtra("email", email + "")
+                startActivity(intent2)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

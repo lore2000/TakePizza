@@ -31,7 +31,10 @@ class MainActivity : AppCompatActivity() {
         val t: User? =mUsers.find { e -> e.toString().equals(verifica) }
         if (t != null && t.toString().equals(verifica)) {
             val intent = Intent(this, MapsActivity::class.java)
+            intent.putExtra("email", email + "")
             startActivity(intent)
+
+
         }else{
             Toast.makeText(this@MainActivity, "Email o password sbagliata", Toast.LENGTH_SHORT).show()
         }

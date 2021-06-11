@@ -29,11 +29,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private val LOCATION_PERMISSION_REQUEST = 1
 
-
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
@@ -41,8 +36,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-
 
     }
 
@@ -71,7 +64,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     val intent = Intent(this, Recensione::class.java)
                     startActivity(intent)
 
-
                 }
                 if(which == 1){
 
@@ -99,6 +91,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val snoopy = MarkerOptions().title("Snoopy").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
             .position(positionSnoopy)
         mMap.addMarker(snoopy)
+
+        val positionGino = LatLng(45.5149185, 9.0524166)
+        val gino = MarkerOptions().title("Da Gino").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+            .position(positionGino)
+        mMap.addMarker(gino)
+
+        val positionNapuleE = LatLng(45.6840936, 8.924219)
+        val napuleE = MarkerOptions().title("napuleE").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+            .position(positionNapuleE)
+        mMap.addMarker(napuleE)
+
+        val positionPiedigrotta = LatLng(45.6858542, 8.7077152)
+        val piedigrotta  = MarkerOptions().title("Piedigrotta").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker))
+            .position(positionPiedigrotta)
+        mMap.addMarker(piedigrotta)
     }
 
     fun onClick(v: View) {

@@ -62,7 +62,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 // the user clicked on colors[which]
                 if(which == 0){
                     val intent = Intent(this, Recensione::class.java)
-                    intent.putExtra("title", marker.title + "")
+                    intent.putExtra("titolo", marker.title + "")
                     startActivity(intent)
 
                 }

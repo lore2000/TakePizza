@@ -28,8 +28,13 @@ class Recensione : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recensione)
         val intent = intent
-        titolo = intent.getStringExtra("title").toString()
-        nomePizzeriaBox.setText(titolo)
+        titolo = intent.getStringExtra("titolo").toString()
+        if(!titolo.contains("null"))
+        {
+            nomePizzeriaBox.setText(titolo)
+        }
+
+
         auth = FirebaseAuth.getInstance()
         databaseUsers = database!!.getReference("Users");
         databaseRecensioni = database!!.getReference("recensioni");
@@ -52,23 +57,9 @@ class Recensione : AppCompatActivity() {
             }
         }
     }
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+
     fun write(v: View){
         var id: String = auth.getCurrentUser()!!.uid
-        val r = Random()
-        var i1: Int = ThreadLocalRandom.current().nextInt(0, 5)
-        /*val checkid: DatabaseReference = databaseRecensioni!!.child(id)
-        checkid.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val idrecensione = dataSnapshot.value.toString()
-                while (!idrecensione.equals(i1.toString())) {
-                    i1 = ThreadLocalRandom.current().nextInt(0, 3)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })*/
-
         val username: DatabaseReference = databaseUsers!!.child(id).child("username")
         val myRef = FirebaseDatabase.getInstance().getReference("recensioni").child(id).push()
         myRef.child("stelle").setValue(stelleBox.getText().toString().trim())
@@ -82,5 +73,6 @@ class Recensione : AppCompatActivity() {
 
             override fun onCancelled(databaseError: DatabaseError) {}
         })
+        Toast.makeText(this, "Recensione inviata", Toast.LENGTH_LONG).show()
     }
 }

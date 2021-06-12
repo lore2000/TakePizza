@@ -1,26 +1,38 @@
 package it.uninsubria.takepizza
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.activity_recensione.*
-import kotlinx.android.synthetic.main.activity_signup.*
+import java.util.*
+import java.util.concurrent.ThreadLocalRandom
+import kotlin.collections.ArrayList
 
 
 class Recensione : AppCompatActivity() {
-    private val TAG = "Recensione"
-    private var mReviewsReference: DatabaseReference? =FirebaseDatabase.getInstance().getReference("recensioni")
-    private val mReviews: MutableList<SaveReviews> = ArrayList()
-    lateinit private var mReviewChildListener: ChildEventListener
+
+    private var titolo :String=""
+    private lateinit var auth: FirebaseAuth
+    var databaseUsers: DatabaseReference? = null
+    var databaseRecensioni: DatabaseReference? = null
+    var database: FirebaseDatabase? = FirebaseDatabase.getInstance()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recensione)
+        val intent = intent
+        titolo = intent.getStringExtra("title").toString()
+        nomePizzeriaBox.setText(titolo)
+        auth = FirebaseAuth.getInstance()
+        databaseUsers = database!!.getReference("Users");
+        databaseRecensioni = database!!.getReference("recensioni");
 
     }
 
@@ -40,53 +52,35 @@ class Recensione : AppCompatActivity() {
             }
         }
     }
-    fun writeRecensione(v: View){
-        var com = commentoBox.getText().toString()
-        var stelle = stelleBox.getText().toString()
-        val nome = usernameBox.getText().toString()
-        SaveReviews("",com,stelle)
-        Toast.makeText(this@Recensione, nome, Toast.LENGTH_SHORT).show()
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun write(v: View){
+        var id: String = auth.getCurrentUser()!!.uid
+        val r = Random()
+        var i1: Int = ThreadLocalRandom.current().nextInt(0, 5)
+        /*val checkid: DatabaseReference = databaseRecensioni!!.child(id)
+        checkid.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val idrecensione = dataSnapshot.value.toString()
+                while (!idrecensione.equals(i1.toString())) {
+                    i1 = ThreadLocalRandom.current().nextInt(0, 3)
+                }
+            }
 
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })*/
+
+        val username: DatabaseReference = databaseUsers!!.child(id).child("username")
+        val myRef = FirebaseDatabase.getInstance().getReference("recensioni").child(id).child(i1.toString())
+        myRef.child("stelle").setValue(stelleBox.getText().toString().trim())
+        myRef.child("commento").setValue(commentoBox.getText().toString())
+        myRef.child("pizzeria").setValue(nomePizzeriaBox.getText().toString())
+        username.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val username = dataSnapshot.value.toString()
+                myRef.child("username").setValue(username)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
-    override fun onStart() {
-        super.onStart()
-        val usersChildListener = getUsersChildEventListener()
-        mReviewsReference!!.addChildEventListener(usersChildListener)
-        mReviewChildListener = usersChildListener
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (mReviewChildListener != null) {
-            mReviewsReference!!.removeEventListener(mReviewChildListener)
-        }
-    }
-
-    fun getUsersChildEventListener(): ChildEventListener{
-        val childEventListener = object : ChildEventListener {
-            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                val newReviews = dataSnapshot.getValue(SaveReviews::class.java)
-                mReviews.add(newReviews!!)
-            }
-            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
-                val newReviews = dataSnapshot.getValue(SaveReviews::class.java)
-                val reviewsKey = dataSnapshot.key
-                mReviews.find { e -> e.toString().equals(reviewsKey) }?.set(newReviews!!)
-            }
-            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-                val reviewsKey = dataSnapshot.key
-                var fu = mReviews.find { e -> e.toString().equals(reviewsKey) }
-                mReviews.remove(fu)
-            }
-            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "postComments:onCancelled", databaseError.toException())
-                Toast.makeText(this@Recensione, "Failed to load comments.", Toast.LENGTH_SHORT).show()
-            }
-        }
-        return childEventListener
-    }
-
 }

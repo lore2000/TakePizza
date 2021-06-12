@@ -20,19 +20,20 @@
         android:id="@+id/stelleBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="24dp"
         android:hint="vota 1-5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recensioneBox" />
+        app:layout_constraintTop_toBottomOf="@+id/nomePizzeriaBox" />
 
     <EditText
         android:id="@+id/commentoBox"
-        android:layout_width="312dp"
-        android:layout_height="272dp"
+        android:layout_width="276dp"
+        android:layout_height="173dp"
         android:layout_marginTop="24dp"
         android:hint="commenta..."
+        app:layout_constraintBottom_toTopOf="@+id/buttonRecensione"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,12 +43,14 @@
         android:id="@+id/buttonRecensione"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="write"
         android:text="INVIA"
         app:backgroundTint="#FF0000"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commentoBox" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -89,5 +92,17 @@
             tools:ignore="VectorDrawableCompat" />
 
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/nomePizzeriaBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="nome pizzeria"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recensioneBox" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

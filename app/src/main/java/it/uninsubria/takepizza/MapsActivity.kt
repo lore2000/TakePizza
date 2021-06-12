@@ -45,8 +45,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         getLocationAccess()
 
-         addMarker()
-         optionMenu()
+        addMarker()
+        optionMenu()
 
     }
 
@@ -54,7 +54,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     {
         // adding on click listener to marker of google maps.
         mMap.setOnMarkerClickListener { marker -> // on marker click we are getting the title of our marker
-            val colors2 = arrayOf("Aggiungi recensione", "Naviga", "Info pizzeria", "Chiudi")
+            val colors2 = arrayOf("Aggiungi recensione", "Naviga", "Chiudi")
 
             val builder = AlertDialog.Builder(this@MapsActivity)
             builder.setTitle(marker.title)
@@ -62,6 +62,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 // the user clicked on colors[which]
                 if(which == 0){
                     val intent = Intent(this, Recensione::class.java)
+                    intent.putExtra("title", marker.title + "")
                     startActivity(intent)
 
                 }
@@ -134,7 +135,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 return
             }
             mMap.isMyLocationEnabled = true
-            goToCurrent()
+            //goToCurrent()
         }
         else
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)
@@ -153,8 +154,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     // for ActivityCompat#requestPermissions for more details.
                     return
                 }
-                 mMap.isMyLocationEnabled = true
-             goToCurrent()
+                mMap.isMyLocationEnabled = true
+
+                goToCurrent()
 
             }
             else {
@@ -169,15 +171,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     {
 
 
-            val locationManager: LocationManager
-            locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val location: Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
-            if (location != null) {
-                var currentLocation = LatLng(location.getLatitude(), location.getLongitude())
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 16f))
-            } else {
-                Toast.makeText(this, "Segnale GPS assente", Toast.LENGTH_LONG).show()
-            }
+        val locationManager: LocationManager
+        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val location: Location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
+        if (location != null) {
+            var currentLocation = LatLng(location.getLatitude(), location.getLongitude())
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 16f))
+        } else {
+            Toast.makeText(this, "Segnale GPS assente", Toast.LENGTH_LONG).show()
+        }
 
 
     }
@@ -191,8 +193,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         val intent = Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://ditu.google.cn/maps?f=d&source=s_d" +
-                        "&saddr=" + location.getLatitude() + "," + location.getLongitude() + "&daddr="+ latitudine + "," + longitudine +"&hl=zh&t=m&dirflg=d"))
+            Uri.parse("http://ditu.google.cn/maps?f=d&source=s_d" +
+                    "&saddr=" + location.getLatitude() + "," + location.getLongitude() + "&daddr="+ latitudine + "," + longitudine +"&hl=zh&t=m&dirflg=d"))
 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
         intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity")

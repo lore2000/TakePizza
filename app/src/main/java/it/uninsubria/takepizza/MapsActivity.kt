@@ -135,7 +135,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 return
             }
             mMap.isMyLocationEnabled = true
-            //goToCurrent()
+            goToCurrent()
         }
         else
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST)

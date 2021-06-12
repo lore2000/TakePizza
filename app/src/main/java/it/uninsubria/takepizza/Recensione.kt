@@ -70,7 +70,7 @@ class Recensione : AppCompatActivity() {
         })*/
 
         val username: DatabaseReference = databaseUsers!!.child(id).child("username")
-        val myRef = FirebaseDatabase.getInstance().getReference("recensioni").child(id).child(i1.toString())
+        val myRef = FirebaseDatabase.getInstance().getReference("recensioni").child(id).push()
         myRef.child("stelle").setValue(stelleBox.getText().toString().trim())
         myRef.child("commento").setValue(commentoBox.getText().toString())
         myRef.child("pizzeria").setValue(nomePizzeriaBox.getText().toString())

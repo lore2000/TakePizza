@@ -22,12 +22,24 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_account.*
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private val LOCATION_PERMISSION_REQUEST = 1
+
+    var databaseRecensioni: DatabaseReference? = null
+    var database: FirebaseDatabase? = FirebaseDatabase.getInstance()
+
+    private lateinit var auth: FirebaseAuth
+
+    private lateinit  var id: String
+    var laMiaOpinione:String=""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +48,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        databaseRecensioni = database!!.getReference("recensioni");
+        auth = FirebaseAuth.getInstance()
+        id = auth.getCurrentUser()!!.uid
+
+
 
     }
 
@@ -46,25 +63,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         getLocationAccess()
 
         addMarker()
+
         optionMenu()
+
 
     }
 
     fun optionMenu()
     {
-        // adding on click listener to marker of google maps.
         mMap.setOnMarkerClickListener { marker -> // on marker click we are getting the title of our marker
-            val colors2 = arrayOf("Aggiungi recensione", "Naviga", "Chiudi")
-
             val builder = AlertDialog.Builder(this@MapsActivity)
             builder.setTitle(marker.title)
+            val colors2 = arrayOf("Srivi recensione", "Naviga", "Vedi la tua opinione","Aggiungi come preferita(inprogress)","Chiudi")
             builder.setItems(colors2) { dialog, which ->
                 // the user clicked on colors[which]
                 if(which == 0){
                     val intent = Intent(this, Recensione::class.java)
                     intent.putExtra("titolo", marker.title + "")
                     startActivity(intent)
-
                 }
                 if(which == 1){
 
@@ -73,6 +89,43 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     goTo(latitudine,longitudine)
                 }
+                if(which ==2)
+                {
+                    val queryUltimo: DatabaseReference = databaseRecensioni!!.child(id).child(marker.title)
+                    queryUltimo.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    if(!dataSnapshot.child("commento").value.toString().contains("null"))
+                    {
+                             val commento = dataSnapshot.child("commento").value.toString()
+                             val stelle= dataSnapshot.child("stelle").value.toString()
+                             laMiaOpinione="Commento: "+commento+" \nStelle: "+stelle
+                    }
+                     else
+                    {
+                     val commento = "Non hai ancora scritto un commento"
+                     laMiaOpinione=commento
+                    }
+                            AlertDialog.Builder(this@MapsActivity)
+
+                                .setTitle("recensione")
+                                .setMessage(laMiaOpinione) // Specifying a listener allows you to take an action before dismissing the dialog.
+                                // The dialog is automatically dismissed when a dialog button is clicked.
+                                .setPositiveButton(
+                                    android.R.string.yes
+                                )
+
+                                {
+                                        dialog, which ->
+                                }
+                                .setIcon(R.drawable.ic_baseline_star_24)
+                                .show()
+                        }
+
+                        override fun onCancelled(databaseError: DatabaseError) {}
+                    })
+
+                }
 
             }
             builder.show()
@@ -80,6 +133,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             false
         }
     }
+
 
     fun addMarker()
     {
@@ -156,7 +210,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
                 mMap.isMyLocationEnabled = true
 
-                goToCurrent()
+
 
             }
             else {

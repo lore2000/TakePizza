@@ -1,6 +1,7 @@
 package it.uninsubria.takepizza
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -10,9 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_recensione.*
+import kotlinx.android.synthetic.main.activity_signup.*
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
 
 
 class Recensione : AppCompatActivity() {
@@ -32,9 +35,8 @@ class Recensione : AppCompatActivity() {
         if(!titolo.contains("null"))
         {
             nomePizzeriaBox.setText(titolo)
+
         }
-
-
         auth = FirebaseAuth.getInstance()
         databaseUsers = database!!.getReference("Users");
         databaseRecensioni = database!!.getReference("recensioni");
@@ -61,18 +63,27 @@ class Recensione : AppCompatActivity() {
     fun write(v: View){
         var id: String = auth.getCurrentUser()!!.uid
         val username: DatabaseReference = databaseUsers!!.child(id).child("username")
-        val myRef = FirebaseDatabase.getInstance().getReference("recensioni").child(id).push()
-        myRef.child("stelle").setValue(stelleBox.getText().toString().trim())
-        myRef.child("commento").setValue(commentoBox.getText().toString())
-        myRef.child("pizzeria").setValue(nomePizzeriaBox.getText().toString())
-        username.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val username = dataSnapshot.value.toString()
-                myRef.child("username").setValue(username)
-            }
+        if(nomePizzeriaBox.text.toString().isNotEmpty())
+        {
+            val myRef = FirebaseDatabase.getInstance().getReference("recensioni").child(id).child(nomePizzeriaBox.text.toString())
+            myRef.child("stelle").setValue(stelleBox.getText().toString().trim())
+            myRef.child("commento").setValue(commentoBox.getText().toString())
+            username.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val username = dataSnapshot.value.toString()
+                    myRef.child("username").setValue(username)
+                }
 
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
-        Toast.makeText(this, "Recensione inviata", Toast.LENGTH_LONG).show()
+                override fun onCancelled(databaseError: DatabaseError) {}
+            })
+            Toast.makeText(this, "Recensione inviata", Toast.LENGTH_LONG).show()
+            finish()
+        }
+        else
+        {
+            nomePizzeriaBox.error = "Inserisci nome pizzeria"
+            Toast.makeText(this, "Inserisci nome pizzeria", Toast.LENGTH_LONG).show()
+        }
+
     }
 }

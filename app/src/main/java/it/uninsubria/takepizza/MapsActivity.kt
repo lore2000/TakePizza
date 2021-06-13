@@ -33,6 +33,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val LOCATION_PERMISSION_REQUEST = 1
 
     var databaseRecensioni: DatabaseReference? = null
+    var databaseUsers: DatabaseReference? = null
     var database: FirebaseDatabase? = FirebaseDatabase.getInstance()
 
     private lateinit var auth: FirebaseAuth
@@ -49,6 +50,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         databaseRecensioni = database!!.getReference("recensioni");
+        databaseUsers = database!!.getReference("Users");
         auth = FirebaseAuth.getInstance()
         id = auth.getCurrentUser()!!.uid
 
@@ -74,7 +76,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.setOnMarkerClickListener { marker -> // on marker click we are getting the title of our marker
             val builder = AlertDialog.Builder(this@MapsActivity)
             builder.setTitle(marker.title)
-            val colors2 = arrayOf("Srivi recensione", "Naviga", "Vedi la tua opinione","Aggiungi come preferita(inprogress)","Chiudi")
+            val colors2 = arrayOf("Srivi recensione", "Naviga", "Vedi la tua opinione","Aggiungi come preferita","Chiudi")
             builder.setItems(colors2) { dialog, which ->
                 // the user clicked on colors[which]
                 if(which == 0){
@@ -125,6 +127,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         override fun onCancelled(databaseError: DatabaseError) {}
                     })
 
+                }
+                if(which ==3)
+                {
+                    val myRef: DatabaseReference = databaseUsers!!.child(id)
+                    myRef.child("Pizzeria preferita").setValue(marker.title)
+                    val latitudine = marker.position.latitude.toString()
+                    val longitudine = marker.position.longitude.toString()
+                    myRef.child("Latitudine").setValue(latitudine)
+                    myRef.child("Longitudine").setValue(longitudine)
+                    Toast.makeText(this, marker.title+" Aggiunta ai tuoi preferiti!", Toast.LENGTH_LONG).show()
                 }
 
             }

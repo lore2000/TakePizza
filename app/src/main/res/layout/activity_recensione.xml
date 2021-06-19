@@ -25,6 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="RECENSIONE"
+            android:textColor="#FF0000"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <EditText
@@ -36,14 +38,13 @@
             android:focusable="false"
             android:hint="Seleziona dalla mappa"
             android:inputType="textPersonName"
-            android:textColorHint="#FF0000" />
+            android:textColorHint="#EC6161" />
 
-        <EditText
-            android:id="@+id/stelleBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:hint="vota 1-5" />
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="98dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="24dp" />
 
         <EditText
             android:id="@+id/commentoBox"

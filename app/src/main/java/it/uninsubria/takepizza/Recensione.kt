@@ -1,26 +1,22 @@
 package it.uninsubria.takepizza
 
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_recensione.*
-import kotlinx.android.synthetic.main.activity_signup.*
-import java.util.*
-import java.util.concurrent.ThreadLocalRandom
-import kotlin.collections.ArrayList
-import kotlin.concurrent.thread
 
 
 class Recensione : AppCompatActivity() {
 
     private var titolo :String=""
+
+    var gender = arrayOf("1", "2","3","4","5")
     private lateinit var auth: FirebaseAuth
     var databaseUsers: DatabaseReference? = null
     var databaseRecensioni: DatabaseReference? = null
@@ -37,9 +33,14 @@ class Recensione : AppCompatActivity() {
             nomePizzeriaBox.setText(titolo)
 
         }
+        val spin: Spinner = findViewById(R.id.spinner);
         auth = FirebaseAuth.getInstance()
         databaseUsers = database!!.getReference("Users");
         databaseRecensioni = database!!.getReference("recensioni");
+
+        val spin_adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, gender)
+        spin.setAdapter(spin_adapter)
 
     }
 
@@ -61,12 +62,14 @@ class Recensione : AppCompatActivity() {
     }
 
     fun write(v: View){
+        val spin: Spinner = findViewById(R.id.spinner);
+        val text: String = spin.getSelectedItem().toString()
         var id: String = auth.getCurrentUser()!!.uid
         val username: DatabaseReference = databaseUsers!!.child(id).child("username")
         if(nomePizzeriaBox.text.toString().isNotEmpty())
         {
             val myRef = FirebaseDatabase.getInstance().getReference("recensioni").child(id).child(nomePizzeriaBox.text.toString())
-            myRef.child("stelle").setValue(stelleBox.getText().toString().trim())
+            myRef.child("stelle").setValue(text)
             myRef.child("commento").setValue(commentoBox.getText().toString())
             username.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {

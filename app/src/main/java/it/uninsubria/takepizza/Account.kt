@@ -7,6 +7,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -80,7 +81,8 @@ class Account : AppCompatActivity() {
 
                         override fun onCancelled(databaseError: DatabaseError) {}
                     })
-                    preferitaBox.text= "Pizzeria preferita: "+preferita+" ,clicca per navigare"
+                    preferitaBox.text= preferita + ", clicca per navigare"
+                    preferitaBox.setGravity(Gravity.CENTER)
                     preferitaBox.setOnClickListener(View.OnClickListener {
                         goTo(latitudine,longitudine)
                     })
@@ -88,6 +90,7 @@ class Account : AppCompatActivity() {
                 else
                 {
                     preferitaBox.text= "Pizzeria preferita: Non presente"
+                    preferitaBox.setGravity(Gravity.CENTER)
                 }
 
             }

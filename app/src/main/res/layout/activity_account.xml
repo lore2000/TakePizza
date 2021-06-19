@@ -4,67 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Account"
-    android:layout_marginTop="20dp">
+    android:paddingTop="30dp"
+    tools:context=".Account">
 
-    <TextView
-        android:id="@+id/InfoAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="INFORMAZIONI ACCOUNT"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/usernameBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:hint="username"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InfoAccount" />
-
-    <TextView
-        android:id="@+id/accountEmailBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:hint="email"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameBox" />
-
-
-    <Button
-        android:id="@+id/buttonLogOut"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:onClick="onClick"
-        android:text="Logout"
-        app:backgroundTint="#FF0000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/preferitaBox" />
+        android:layout_margin="20dp"
+        android:background="#EDEAEA"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="30dp">
+
+        <TextView
+            android:id="@+id/InfoAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="INFORMAZIONI ACCOUNT"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/usernameBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="username"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/accountEmailBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="email"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/preferitaBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="pizzeria preferita"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/buttonLogOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:onClick="onClick"
+            android:text="Logout"
+            app:backgroundTint="#FF0000" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:padding="10dp"
-        android:background="@color/white">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
             android:id="@+id/buttonMaps"
@@ -84,7 +88,7 @@
             android:background="@color/white"
             android:onClick="onClick"
             app:srcCompat="@drawable/ic_baseline_star_24"
-            tools:ignore="VectorDrawableCompat"/>
+            tools:ignore="VectorDrawableCompat" />
 
         <ImageButton
             android:id="@+id/buttonAccount"
@@ -97,16 +101,5 @@
             tools:ignore="VectorDrawableCompat" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/preferitaBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:hint="pizzeria preferita"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountEmailBox" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@
         android:background="#EDEAEA"
         android:gravity="center"
         android:orientation="vertical"
+        android:padding="15dp"
         tools:layout_editor_absoluteX="95dp"
         tools:layout_editor_absoluteY="15dp">
 
